@@ -56,11 +56,21 @@ class CalculatorMain extends StatelessWidget {
       child: const Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-           CalculatorDisplay(),
+          CalculatorDisplay(),
           CalculatorRow(buttons: [
             NumberButton(number: 1),
             NumberButton(number: 2),
             NumberButton(number: 3),
+          ]),
+          CalculatorRow(buttons: [
+            NumberButton(number: 4),
+            NumberButton(number: 5),
+            NumberButton(number: 6),
+          ]),
+          CalculatorRow(buttons: [
+            NumberButton(number: 7),
+            NumberButton(number: 8),
+            NumberButton(number: 9),
           ]),
         ],
       ),
