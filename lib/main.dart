@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +29,10 @@ class CalculatorData extends ChangeNotifier {
   num prevResult = 0;
   bool applied = false;
   int currentOP = -1;
+
+  String getResult() {
+    return result.toString();
+  }
 
   void updateNumber(num x) {
     if (applied == true && currentOP == -1) {
@@ -152,9 +155,9 @@ class CalculatorDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    var appState = context.watch<CalculatorData>();
+    var calcState = context.watch<CalculatorData>();
     
-    var result = appState.result.toString();
+    var result = calcState.getResult(); // Get result to display
 
     return Container(
       color: Colors.amber,
@@ -179,7 +182,7 @@ class CalculatorRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(2),
+      margin: const EdgeInsets.all(2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: buttons,
