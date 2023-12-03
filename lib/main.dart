@@ -116,6 +116,10 @@ class CalculatorData extends ChangeNotifier {
         break;
       case 4: // Division
         result = prevResult / result;
+        break;
+      case 5: // Percentage
+        result = (prevResult/100) * result;
+        break;
     }
 
     if (currentOP != -1) { // Operation was used, need to reset
@@ -198,7 +202,7 @@ class CalculatorMain extends StatelessWidget {
           const CalculatorDisplay(),
           CalculatorRow(buttons: [
             OperationButton(operation: () => calcState.reset(), text: "AC"),
-            OperationButton(operation: () => {}, text: "X"),
+            OperationButton(operation: () => calcState.setOP(5), text: "%"),
             OperationButton(operation: () => calcState.backspaceNumber(), text: "Back"),
             OperationButton(operation: () => calcState.setOP(1), text: "+"),
           ]),
