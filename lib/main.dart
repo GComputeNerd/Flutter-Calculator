@@ -61,18 +61,7 @@ class CalculatorData extends ChangeNotifier {
 
 
   void updateNumber(num x) {
-    // Check whether to update current result, or start a new calculation
-    if (applied == true && currentOP == -1) {
-      if (currentOP == -1) {
-        // Operations were all applied. So type new number
-        result = 0;
-        prevResult = 0;
-        applied = false;
-      } else {
-        // Currently in a new operation. Must retain result
-        applied = false;
-      }
-    }
+    testAndResetBuffers();
 
     // Logic to update number
     if (!(isDecimal)) {
@@ -91,6 +80,7 @@ class CalculatorData extends ChangeNotifier {
   }
 
   void makeDecimal() {
+    testAndResetBuffers();
     isDecimal = true;
 
     notifyListeners();
@@ -98,6 +88,7 @@ class CalculatorData extends ChangeNotifier {
 
   void apply() {
     result = isDecimal ? getResultDecimal() : result;
+    resetDecimal();
 
     switch (currentOP) {
       case 1: // Addition
@@ -133,12 +124,34 @@ class CalculatorData extends ChangeNotifier {
   void reset() {
     result = 0;
     prevResult = 0;
+    currentOP = -1;
+
+    applied = false;
+
+    resetDecimal();
+
+    notifyListeners();
+  }
+
+  void resetDecimal() {
+    isDecimal = false;
     decimalPower = 0;
     decimalPart = 0;
-    currentOP = -1;
-    applied = false;
-    isDecimal = false;
-    notifyListeners();
+  }
+
+  void testAndResetBuffers() {
+    // Check whether to update current result, or start a new calculation
+    if (applied == true && currentOP == -1) {
+      if (currentOP == -1) {
+        // Operations were all applied. So type new number
+        result = 0;
+        prevResult = 0;
+        applied = false;
+      } else {
+        // Currently in a new operation. Must retain result
+        applied = false;
+      }
+    }
   }
 }
 
