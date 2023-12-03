@@ -24,10 +24,48 @@ class MyApp extends StatelessWidget {
 }
 
 class CalculatorData extends ChangeNotifier {
-  var result = 0;
+  double result = 0;
+  double prevResult = 0;
+  double currentOP = -1;
 
   void updateNumber(int x) {
-    result = result*10 + x;
+    if (result >= 0) {
+      result = result*10 + x;
+    } else {
+      result = result*10 - x;
+    }
+    notifyListeners();
+  }
+
+  void apply() {
+    switch (currentOP) {
+      case 1: // Addition
+        result = result + prevResult;
+        break;
+      case 2: // Subtraction
+        result = prevResult - result;
+        break;
+      case 3: // Multiplication
+        result = prevResult * result;
+        break;
+      case 4: // Division
+        result = prevResult / result;
+    }
+    prevResult = 0;
+    currentOP = -1;
+    notifyListeners();
+  }
+
+  void setOP(double opCode) {
+    apply();
+    currentOP = opCode;
+    prevResult = result;
+    result = 0;
+    notifyListeners();
+  }
+
+  void reset() {
+    result = 0;
     notifyListeners();
   }
 }
@@ -51,27 +89,37 @@ class CalculatorMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var calcState = context.watch<CalculatorData>();
+
     return Container(
       padding: const EdgeInsets.all(3),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CalculatorDisplay(),
-          CalculatorRow(buttons: [
+          const CalculatorDisplay(),
+          const CalculatorRow(buttons: [
             NumberButton(number: 1),
             NumberButton(number: 2),
             NumberButton(number: 3),
           ]),
-          CalculatorRow(buttons: [
+          const CalculatorRow(buttons: [
             NumberButton(number: 4),
             NumberButton(number: 5),
             NumberButton(number: 6),
           ]),
-          CalculatorRow(buttons: [
+          const CalculatorRow(buttons: [
             NumberButton(number: 7),
             NumberButton(number: 8),
             NumberButton(number: 9),
           ]),
+          CalculatorRow(buttons: [
+            OperationButton(operation: () => calcState.setOP(1),
+            text: "+"),
+            OperationButton(operation: () => calcState.setOP(2),
+            text: "-"),
+            OperationButton(operation: () => calcState.apply(),
+            text: "=")
+          ])
         ],
       ),
     );
@@ -110,8 +158,12 @@ class CalculatorRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: this.buttons
+    return Container(
+      margin: EdgeInsets.all(2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: buttons,
+      ),
     );
   }
 }
@@ -127,5 +179,20 @@ class NumberButton extends StatelessWidget {
 
     return ElevatedButton(onPressed: () => appState.updateNumber(number!),
     child: Text(number.toString()));
+  }
+}
+
+class OperationButton extends StatelessWidget {
+  final Function operation;
+  final String text;
+
+  const OperationButton({super.key, 
+    required this.operation,
+    required this.text,});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(onPressed: () => operation(), 
+      child: Text(text));
   }
 }
