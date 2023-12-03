@@ -34,9 +34,10 @@ class CalculatorData extends ChangeNotifier {
   // To keep track of decimals
   bool isDecimal = false;
   int decimalPower = 0; 
+  num decimalPart = 0;
 
   String getResult() {
-    if (!(isDecimal) || decimalPower > 0) {
+    if (!(isDecimal)) {
       return result.toString();
     }
 
@@ -45,7 +46,7 @@ class CalculatorData extends ChangeNotifier {
       return result.toString() +(".");
     }
 
-    return "ERROR COULD NOT GET RESULT STRING";
+    return "$result.$decimalPart";
   }
 
   void updateNumber(num x) {
@@ -63,15 +64,16 @@ class CalculatorData extends ChangeNotifier {
     }
 
     // Logic to update number
-    if (result >= 0) {
-      result = result*pow(10, decimalPower + 1) + x;
+    if (!(isDecimal)) {
+      if (result >= 0) {
+        result = result*10 + x;
+      } else {
+        result = result*10 - x;
+      }
     } else {
-      result = result*pow(10, decimalPower + 1) - x;
-    }
-
-    // Update DecimalPower if necessary
-    if (isDecimal) {
-      result = result / pow(10,++decimalPower);
+      // is Decimal
+      decimalPart = decimalPart*10 + x;
+      decimalPower++;
     }
 
     notifyListeners();
@@ -102,8 +104,8 @@ class CalculatorData extends ChangeNotifier {
       prevResult = 0;
       currentOP = -1;
       applied = true;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   void setOP(int opCode) {
@@ -116,6 +118,12 @@ class CalculatorData extends ChangeNotifier {
 
   void reset() {
     result = 0;
+    prevResult = 0;
+    decimalPower = 0;
+    decimalPart = 0;
+    currentOP = -1;
+    applied = false;
+    isDecimal = false;
     notifyListeners();
   }
 }
