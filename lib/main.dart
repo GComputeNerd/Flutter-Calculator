@@ -25,16 +25,31 @@ class MyApp extends StatelessWidget {
 }
 
 class CalculatorData extends ChangeNotifier {
-  num result = 0;
-  num prevResult = 0;
-  bool applied = false;
-  int currentOP = -1;
+  num result = 0; // Stores current result
+  num prevResult = 0; // Stores previous result
+  int currentOP = -1; // Tracks current operation being used.
+
+  bool applied = false; // Checks whether the operation has been applied or not.
+
+  // To keep track of decimals
+  bool isDecimal = false;
+  int decimalPower = 0; 
 
   String getResult() {
-    return result.toString();
+    if (!(isDecimal) || decimalPower > 0) {
+      return result.toString();
+    }
+
+    // The number is decimal
+    if (decimalPower == 0) { // No decimal part
+      return result.toString() +(".");
+    }
+
+    return "ERROR COULD NOT GET RESULT STRING";
   }
 
   void updateNumber(num x) {
+    // Check whether to update current result, or start a new calculation
     if (applied == true && currentOP == -1) {
       if (currentOP == -1) {
         // Operations were all applied. So type new number
@@ -47,11 +62,18 @@ class CalculatorData extends ChangeNotifier {
       }
     }
 
+    // Logic to update number
     if (result >= 0) {
       result = result*10 + x;
     } else {
       result = result*10 - x;
     }
+    notifyListeners();
+  }
+
+  void makeDecimal() {
+    isDecimal = true;
+
     notifyListeners();
   }
 
@@ -119,10 +141,11 @@ class CalculatorMain extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const CalculatorDisplay(),
-          const CalculatorRow(buttons: [
-            NumberButton(number: 1),
-            NumberButton(number: 2),
-            NumberButton(number: 3),
+          CalculatorRow(buttons: [
+            const NumberButton(number: 1),
+            const NumberButton(number: 2),
+            const NumberButton(number: 3),
+            OperationButton(operation: () => calcState.makeDecimal(), text: "."),
           ]),
           const CalculatorRow(buttons: [
             NumberButton(number: 4),
