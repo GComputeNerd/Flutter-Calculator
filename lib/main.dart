@@ -82,9 +82,10 @@ class CalculatorData extends ChangeNotifier {
     if (isDecimal) {
       if (decimalPart == 0) {
         isDecimal = false;
-      }
+      } else {
       decimalPart = decimalPart ~/ 10;
       decimalPower--;
+      }
     } else {
       result = result ~/ 10;
     }
