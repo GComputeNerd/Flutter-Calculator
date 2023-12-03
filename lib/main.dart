@@ -36,7 +36,7 @@ class CalculatorData extends ChangeNotifier {
   int decimalPower = 0; 
   num decimalPart = 0;
 
-  String getResult() {
+  String getResultString() {
     if (!(isDecimal)) {
       return result.toString();
     }
@@ -48,6 +48,17 @@ class CalculatorData extends ChangeNotifier {
 
     return "$result.$decimalPart";
   }
+
+  num getResultDecimal() {
+    if (result >= 0) {
+      result = result + decimalPart/pow(10, decimalPower);
+    } else {
+      result = result - decimalPart/pow(10, decimalPower);
+    }
+
+    return result;
+  }
+
 
   void updateNumber(num x) {
     // Check whether to update current result, or start a new calculation
@@ -86,6 +97,8 @@ class CalculatorData extends ChangeNotifier {
   }
 
   void apply() {
+    result = isDecimal ? getResultDecimal() : result;
+
     switch (currentOP) {
       case 1: // Addition
         result = result + prevResult;
@@ -100,9 +113,10 @@ class CalculatorData extends ChangeNotifier {
         result = prevResult / result;
     }
 
-    if (currentOP != -1) { // No operation was used, so no need to reset
-      prevResult = 0;
-      currentOP = -1;
+    if (currentOP != -1) { // Operation was used, need to reset
+      var temp = result;
+      reset();
+      result = temp;
       applied = true;
     }
     notifyListeners();
@@ -194,7 +208,7 @@ class CalculatorDisplay extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     var calcState = context.watch<CalculatorData>();
     
-    var result = calcState.getResult(); // Get result to display
+    var result = calcState.getResultString(); // Get result to display
 
     return Container(
       color: Colors.amber,
