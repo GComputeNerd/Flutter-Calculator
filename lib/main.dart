@@ -59,7 +59,6 @@ class CalculatorData extends ChangeNotifier {
     return result;
   }
 
-
   void updateNumber(num x) {
     testAndResetBuffers();
 
@@ -162,7 +161,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Color(0xff84abb4),
-      body: CalculatorMain(),
+      body: Center(child: CalculatorMain()),
     );
   }
 }
