@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +28,22 @@ class MyApp extends StatelessWidget {
 class CalculatorData extends ChangeNotifier {
   num result = 0;
   num prevResult = 0;
+  bool applied = false;
   int currentOP = -1;
 
   void updateNumber(num x) {
+    if (applied == true && currentOP == -1) {
+      if (currentOP == -1) {
+        // Operations were all applied. So type new number
+        result = 0;
+        prevResult = 0;
+        applied = false;
+      } else {
+        // Currently in a new operation. Must retain result
+        applied = false;
+      }
+    }
+
     if (result >= 0) {
       result = result*10 + x;
     } else {
@@ -51,9 +66,13 @@ class CalculatorData extends ChangeNotifier {
       case 4: // Division
         result = prevResult / result;
     }
-    prevResult = 0;
-    currentOP = -1;
-    notifyListeners();
+
+    if (currentOP != -1) { // No operation was used, so no need to reset
+      prevResult = 0;
+      currentOP = -1;
+      applied = true;
+      notifyListeners();
+    }
   }
 
   void setOP(int opCode) {
