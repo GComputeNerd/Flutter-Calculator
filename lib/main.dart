@@ -64,10 +64,16 @@ class CalculatorData extends ChangeNotifier {
 
     // Logic to update number
     if (result >= 0) {
-      result = result*10 + x;
+      result = result*pow(10, decimalPower + 1) + x;
     } else {
-      result = result*10 - x;
+      result = result*pow(10, decimalPower + 1) - x;
     }
+
+    // Update DecimalPower if necessary
+    if (isDecimal) {
+      result = result / pow(10,++decimalPower);
+    }
+
     notifyListeners();
   }
 
