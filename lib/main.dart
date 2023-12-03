@@ -24,11 +24,11 @@ class MyApp extends StatelessWidget {
 }
 
 class CalculatorData extends ChangeNotifier {
-  double result = 0;
-  double prevResult = 0;
-  double currentOP = -1;
+  num result = 0;
+  num prevResult = 0;
+  int currentOP = -1;
 
-  void updateNumber(int x) {
+  void updateNumber(num x) {
     if (result >= 0) {
       result = result*10 + x;
     } else {
@@ -56,7 +56,7 @@ class CalculatorData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setOP(double opCode) {
+  void setOP(int opCode) {
     apply();
     currentOP = opCode;
     prevResult = result;
@@ -118,7 +118,8 @@ class CalculatorMain extends StatelessWidget {
             OperationButton(operation: () => calcState.setOP(2),
             text: "-"),
             OperationButton(operation: () => calcState.apply(),
-            text: "=")
+            text: "="),
+            OperationButton(operation: () => calcState.reset(), text: "AC")
           ])
         ],
       ),
