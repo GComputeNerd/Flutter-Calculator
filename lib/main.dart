@@ -182,30 +182,35 @@ class CalculatorMain extends StatelessWidget {
         children: [
           const CalculatorDisplay(),
           CalculatorRow(buttons: [
+            OperationButton(operation: () => calcState.reset(), text: "AC"),
+            OperationButton(operation: () => {}, text: "X"),
+            OperationButton(operation: () => {}, text: "X"),
+            OperationButton(operation: () => calcState.setOP(1), text: "+"),
+          ]),
+          CalculatorRow(buttons: [
             const NumberButton(number: 1),
             const NumberButton(number: 2),
             const NumberButton(number: 3),
-            OperationButton(operation: () => calcState.makeDecimal(), text: "."),
+            OperationButton(operation: () => calcState.setOP(2), text: "-"),
           ]),
-          const CalculatorRow(buttons: [
+          CalculatorRow(buttons: [
             NumberButton(number: 4),
             NumberButton(number: 5),
             NumberButton(number: 6),
+            OperationButton(operation: () => calcState.setOP(3), text: "*"),
           ]),
-          const CalculatorRow(buttons: [
+          CalculatorRow(buttons: [
             NumberButton(number: 7),
             NumberButton(number: 8),
             NumberButton(number: 9),
+            OperationButton(operation: () => calcState.setOP(4), text: "/"),
           ]),
           CalculatorRow(buttons: [
-            OperationButton(operation: () => calcState.setOP(1),
-            text: "+"),
-            OperationButton(operation: () => calcState.setOP(2),
-            text: "-"),
-            OperationButton(operation: () => calcState.apply(),
-            text: "="),
-            OperationButton(operation: () => calcState.reset(), text: "AC")
-          ])
+            OperationButton(operation: () => {}, text: "X"),
+            const NumberButton(number: 0),
+            OperationButton(operation: () => calcState.makeDecimal(), text: "."),
+            OperationButton(operation: () => calcState.apply(), text: "="),
+          ]),
         ],
       ),
     );
