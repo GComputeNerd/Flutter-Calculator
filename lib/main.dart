@@ -78,6 +78,20 @@ class CalculatorData extends ChangeNotifier {
     notifyListeners();
   }
 
+  void backspaceNumber() {
+    if (isDecimal) {
+      if (decimalPart == 0) {
+        isDecimal = false;
+      }
+      decimalPart = decimalPart ~/ 10;
+      decimalPower--;
+    } else {
+      result = result ~/ 10;
+    }
+
+    notifyListeners();
+  }
+
   void makeDecimal() {
     testAndResetBuffers();
     isDecimal = true;
@@ -184,7 +198,7 @@ class CalculatorMain extends StatelessWidget {
           CalculatorRow(buttons: [
             OperationButton(operation: () => calcState.reset(), text: "AC"),
             OperationButton(operation: () => {}, text: "X"),
-            OperationButton(operation: () => {}, text: "X"),
+            OperationButton(operation: () => calcState.backspaceNumber(), text: "Back"),
             OperationButton(operation: () => calcState.setOP(1), text: "+"),
           ]),
           CalculatorRow(buttons: [
