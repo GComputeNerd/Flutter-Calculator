@@ -23,17 +23,18 @@ class CalculatorData extends ChangeNotifier {
       return result.toString() +(".");
     }
 
-    return "$result.$decimalPart";
+    return getResultDecimal().toString();
   }
 
   num getResultDecimal() {
+    num  resultDecimal = 0;
     if (result >= 0) {
-      result = result + decimalPart/pow(10, decimalPower);
+      resultDecimal = result + decimalPart/pow(10, decimalPower);
     } else {
-      result = result - decimalPart/pow(10, decimalPower);
+      resultDecimal = result - decimalPart/pow(10, decimalPower);
     }
 
-    return result;
+    return resultDecimal;
   }
 
   void updateNumber(num x) {

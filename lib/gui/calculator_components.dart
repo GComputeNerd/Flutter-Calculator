@@ -54,8 +54,15 @@ class NumberButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<CalculatorData>();
 
-    return ElevatedButton(onPressed: () => appState.updateNumber(number!),
-    child: Text(number.toString()));
+    return OutlinedButton(
+      onPressed: () => appState.updateNumber(number!),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Colors.white,
+        shape: CircleBorder(),
+        padding: EdgeInsets.all(23),
+      ),
+      child: Text(number.toString())
+    );
   }
 }
 
@@ -69,7 +76,17 @@ class OperationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(onPressed: () => operation(), 
-      child: Text(text));
+    return OutlinedButton(
+      onPressed: () => operation(), 
+      child: Container(
+        margin: EdgeInsets.only(bottom: 5),
+        child: Text(text),
+      ),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Colors.white,
+        shape: CircleBorder(),
+        padding: EdgeInsets.all(23),
+      ),
+    );
   }
 }
