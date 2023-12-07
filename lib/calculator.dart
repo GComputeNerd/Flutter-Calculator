@@ -35,16 +35,16 @@ class CalculatorData extends ChangeNotifier {
     
     switch (currentOP) {
       case 1:
-        result = result +("+");
+        result = result +(" +");
         break;
       case 2:
-        result = result +("-");
+        result = result +(" -");
         break;
       case 3:
-        result = result +("*");
+        result = result +(" *");
         break;
       case 4:
-        result = result +("/");
+        result = result +(" /");
         break;
       case 5:
         result = result +("% of");

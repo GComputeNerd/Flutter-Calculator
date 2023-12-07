@@ -32,7 +32,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xff84abb4),
+      backgroundColor: Color.fromARGB(255, 115, 42, 188),
       body: Center(child: CalculatorMain()),
     );
   }

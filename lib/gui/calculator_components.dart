@@ -15,40 +15,58 @@ class CalculatorDisplay extends StatelessWidget {
     var buffer = calcState.getBufferString();
 
     var widgetsToDisplay = <Widget>[
-      ResultDisplay(width:width, result: result,)
+      ResultDisplay(width:width, result: result,buffer: buffer)
     ];
 
     if (buffer != "") {
       widgetsToDisplay.add(BufferDisplay(width:width, buffer: buffer));
     }
 
-    return Card(
-      color: Colors.amber,
-      child: Container(
-        width: width*0.8,
+    return Container(
+        width: width*0.9,
         padding: const EdgeInsets.all(14),
         child: Column(
           children: widgetsToDisplay,
         ),
-      ),
-    );
+      );
   }
 }
 
 class ResultDisplay extends StatelessWidget {
-  const ResultDisplay({
+  ResultDisplay({
     super.key,
     required this.width,
     required this.result,
+    required this.buffer,
+    this.radius = 10,
   });
 
   final double width;
   final String result;
+  final String buffer;
+
+  double radius;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    BorderRadius borderRadius;
+
+    if (buffer == "") {
+      borderRadius = BorderRadius.all(Radius.circular(radius));
+    } else {
+      borderRadius = const BorderRadius.only(
+         topLeft: Radius.circular(10),
+         topRight: Radius.circular(10),
+      );
+    }
+
+    return Container(
       width: width,
+      padding: EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: borderRadius,
+      ),
       child: Text(
         result,
         textAlign: TextAlign.right,
@@ -75,7 +93,22 @@ class BufferDisplay extends StatelessWidget {
     var calcData = context.watch<CalculatorData>();
     var buffer = calcData.getBufferString();
 
-    return Text("Buffer : $buffer");
+    return Container(
+      width: width,
+      decoration: const BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
+      child: Text(buffer,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 18,
+        ),),
+    );
   }
 }
 
@@ -132,14 +165,14 @@ class OperationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: () => operation(), 
-      child: Container(
-        margin: EdgeInsets.only(bottom: 5),
-        child: Text(text),
-      ),
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
         shape: CircleBorder(),
         padding: EdgeInsets.all(23),
+      ),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 5),
+        child: Text(text),
       ),
     );
   }
