@@ -25,7 +25,7 @@ class CalculatorDisplay extends StatelessWidget {
     }
 
     return Container(
-        width: width*0.9,
+        width: width,
         padding: const EdgeInsets.all(14),
         child: Column(
           children: widgetsToDisplay,
@@ -51,10 +51,13 @@ class ResultDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BorderRadius borderRadius;
+    double vertical;
 
     if (buffer == "") {
       borderRadius = BorderRadius.all(Radius.circular(radius));
+      vertical = 15;
     } else {
+      vertical = 8;
       borderRadius = const BorderRadius.only(
          topLeft: Radius.circular(10),
          topRight: Radius.circular(10),
@@ -63,7 +66,8 @@ class ResultDisplay extends StatelessWidget {
 
     return Container(
       width: width,
-      padding: const EdgeInsets.all(7),
+      padding: EdgeInsets.symmetric(horizontal:7,
+      vertical: vertical),
       decoration: BoxDecoration(
         color: Colors.amber,
         borderRadius: borderRadius,
@@ -96,6 +100,7 @@ class BufferDisplay extends StatelessWidget {
 
     return Container(
       width: width,
+      padding: EdgeInsets.symmetric(vertical: 3),
       decoration: const BoxDecoration(
         color: Colors.green,
         borderRadius: BorderRadius.only(
@@ -126,9 +131,9 @@ class CalculatorRow extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 7),
+      margin: const EdgeInsets.only(bottom: 9),
       child: SizedBox(
-        width: width *0.9,
+        width: width*0.95,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: buttons,
@@ -177,20 +182,27 @@ class CalculatorButton extends StatelessWidget {
   final Function onPressed;
   final String text;
 
+  factory CalculatorButton.icon(Function onPressed, Icon icon){
+    return _CalculatorButtonIcon(
+      onPressed: onPressed,
+      icon: icon,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
     return SizedBox(
-      width: width*0.16,
-      height: height*0.07,
+      width: width*0.2,
+      height: height*0.1,
       child: TextButton(
         onPressed: () => onPressed(),
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor: Colors.redAccent,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
@@ -198,10 +210,45 @@ class CalculatorButton extends StatelessWidget {
           padding: const EdgeInsets.all(23),
         ),
         child: AutoSizeText(text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 30,
+            fontWeight: FontWeight.w900,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CalculatorButtonIcon extends CalculatorButton {
+  const _CalculatorButtonIcon({
+  required super.onPressed,
+  super.text = "",
+  required this.icon});
+
+  final Icon icon;
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    return SizedBox(
+      width: width*0.2,
+      height: height*0.1,
+      child: TextButton(
+        onPressed: () => onPressed(),
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.redAccent,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          padding: const EdgeInsets.all(23),
+        ),
+        child: icon,
       ),
     );
   }
