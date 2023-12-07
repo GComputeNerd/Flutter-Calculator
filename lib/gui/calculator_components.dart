@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +35,7 @@ class CalculatorDisplay extends StatelessWidget {
 }
 
 class ResultDisplay extends StatelessWidget {
-  ResultDisplay({
+  const ResultDisplay({
     super.key,
     required this.width,
     required this.result,
@@ -44,8 +46,7 @@ class ResultDisplay extends StatelessWidget {
   final double width;
   final String result;
   final String buffer;
-
-  double radius;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class ResultDisplay extends StatelessWidget {
 
     return Container(
       width: width,
-      padding: EdgeInsets.all(7),
+      padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
         color: Colors.amber,
         borderRadius: borderRadius,
@@ -133,23 +134,17 @@ class CalculatorRow extends StatelessWidget {
 }
 
 class NumberButton extends StatelessWidget {
-  final int? number;
+  final int number;
 
   const NumberButton({super.key, required this.number});
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<CalculatorData>();
+    var text = number.toString();
+    var onPressed = appState.updateNumber;
 
-    return OutlinedButton(
-      onPressed: () => appState.updateNumber(number!),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.white,
-        shape: CircleBorder(),
-        padding: EdgeInsets.all(23),
-      ),
-      child: Text(number.toString())
-    );
+    return CalculatorButton(onPressed: (number) => onPressed, text: text);
   }
 }
 
@@ -163,17 +158,31 @@ class OperationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return CalculatorButton(onPressed: operation, text: text);
+  }
+}
+
+class CalculatorButton extends StatelessWidget {
+  const CalculatorButton({
+    super.key,
+    required this.onPressed,
+    required this.text,
+  });
+
+  final Function onPressed;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () => operation(), 
+      onPressed: () => onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
+        backgroundColor: Colors.redAccent,
         shape: CircleBorder(),
         padding: EdgeInsets.all(23),
       ),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        child: Text(text),
-      ),
+      child: Text(text),
     );
   }
 }
