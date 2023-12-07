@@ -1,3 +1,4 @@
-- [ ] Use string to store result
-- [ ] Fix handling of negative numbers
-- [ ] Add history tab
+- [ ] Use string to store result.
+- [ ] Fix handling of negative numbers.
+- [ ] Add history tab.
+- [ ] Fix handling of when user enters a sequence of operations.s

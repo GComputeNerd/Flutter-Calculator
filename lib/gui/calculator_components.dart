@@ -1,9 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:calculator/calculator.dart';
+
 
 class CalculatorDisplay extends StatelessWidget {
   const CalculatorDisplay({super.key});
@@ -123,11 +123,16 @@ class CalculatorRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
-      margin: const EdgeInsets.all(2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: buttons,
+      margin: const EdgeInsets.only(bottom: 7),
+      child: SizedBox(
+        width: width *0.9,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: buttons,
+        ),
       ),
     );
   }
@@ -174,15 +179,30 @@ class CalculatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () => onPressed(),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.redAccent,
-        shape: const CircleBorder(),
-        padding: const EdgeInsets.all(23),
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    return SizedBox(
+      width: width*0.16,
+      height: height*0.07,
+      child: TextButton(
+        onPressed: () => onPressed(),
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.redAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          padding: const EdgeInsets.all(23),
+        ),
+        child: AutoSizeText(text,
+          style: TextStyle(
+            fontSize: 30,
+          ),
+        ),
       ),
-      child: Text(text),
     );
   }
 }
