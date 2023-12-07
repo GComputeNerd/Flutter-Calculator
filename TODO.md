@@ -1,0 +1,3 @@
+- [ ] Use string to store result
+- [ ] Fix handling of negative numbers
+- [ ] Add history tab
