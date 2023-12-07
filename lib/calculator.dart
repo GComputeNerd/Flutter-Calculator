@@ -26,6 +26,34 @@ class CalculatorData extends ChangeNotifier {
     return getResultDecimal().toString();
   }
 
+  String getBufferString() {
+    if (currentOP == -1 && prevResult == 0) {
+      return "";
+    }
+
+    var result = prevResult.toString();
+    
+    switch (currentOP) {
+      case 1:
+        result = result +("+");
+        break;
+      case 2:
+        result = result +("-");
+        break;
+      case 3:
+        result = result +("*");
+        break;
+      case 4:
+        result = result +("/");
+        break;
+      case 5:
+        result = result +("% of");
+        break;
+    }
+
+    return result;
+  }
+
   num getResultDecimal() {
     num  resultDecimal = 0;
     if (result >= 0) {

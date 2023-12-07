@@ -12,16 +12,70 @@ class CalculatorDisplay extends StatelessWidget {
     var calcState = context.watch<CalculatorData>();
     
     var result = calcState.getResultString(); // Get result to display
+    var buffer = calcState.getBufferString();
 
-    return Container(
+    var widgetsToDisplay = <Widget>[
+      ResultDisplay(width:width, result: result,)
+    ];
+
+    if (buffer != "") {
+      widgetsToDisplay.add(BufferDisplay(width:width, buffer: buffer));
+    }
+
+    return Card(
       color: Colors.amber,
-      width: width*0.8,
-      margin: const EdgeInsets.symmetric(vertical: 9),
-      padding: const EdgeInsets.all(5),
+      child: Container(
+        width: width*0.8,
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          children: widgetsToDisplay,
+        ),
+      ),
+    );
+  }
+}
+
+class ResultDisplay extends StatelessWidget {
+  const ResultDisplay({
+    super.key,
+    required this.width,
+    required this.result,
+  });
+
+  final double width;
+  final String result;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
       child: Text(
         result,
-        textAlign: TextAlign.right,),
+        textAlign: TextAlign.right,
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 20,
+        ),),
     );
+  }
+}
+
+class BufferDisplay extends StatelessWidget {
+  const BufferDisplay({
+    super.key,
+    required this.width,
+    required this.buffer,
+  });
+
+  final double width;
+  final String buffer;
+
+  @override
+  Widget build(BuildContext context) {
+    var calcData = context.watch<CalculatorData>();
+    var buffer = calcData.getBufferString();
+
+    return Text("Buffer : $buffer");
   }
 }
 
