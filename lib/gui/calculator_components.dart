@@ -144,7 +144,7 @@ class NumberButton extends StatelessWidget {
     var text = number.toString();
     var onPressed = appState.updateNumber;
 
-    return CalculatorButton(onPressed: (number) => onPressed, text: text);
+    return CalculatorButton(onPressed: () => onPressed(number), text: text);
   }
 }
 
@@ -158,7 +158,7 @@ class OperationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CalculatorButton(onPressed: operation, text: text);
+    return CalculatorButton(onPressed: () => operation(), text: text);
   }
 }
 
@@ -175,12 +175,12 @@ class CalculatorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () => onPressed,
+      onPressed: () => onPressed(),
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Colors.redAccent,
-        shape: CircleBorder(),
-        padding: EdgeInsets.all(23),
+        shape: const CircleBorder(),
+        padding: const EdgeInsets.all(23),
       ),
       child: Text(text),
     );

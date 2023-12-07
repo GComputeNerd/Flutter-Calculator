@@ -55,7 +55,7 @@ class CalculatorMain extends StatelessWidget {
           const CalculatorDisplay(),
           CalculatorRow(buttons: [
             OperationButton(operation: () => calcState.reset(), text: "AC"),
-            OperationButton(operation: () => calcState.setOP(5), text: "%"),
+            CalculatorButton(onPressed: () => calcState.setOP(5), text: "%"),
             OperationButton(operation: () => calcState.backspaceNumber(), text: "Back"),
             OperationButton(operation: () => calcState.setOP(1), text: "+"),
           ]),
