@@ -49,6 +49,11 @@ class CalculatorData extends ChangeNotifier {
   void backspaceNumber() {
     if (result.length != 1) {
       result = result.substring(0, result.length -1);
+    } else if (result == '0' && operation != "") {
+      operation = "";
+      currentOP = -1;
+      result = buffer;
+      buffer = "";
     } else {
       result = '0';
     }
@@ -101,11 +106,12 @@ class CalculatorData extends ChangeNotifier {
 
   void setOP(int opCode) {
     // Sets Operation to be done
-    if (currentOP == -1){
-      currentOP = opCode;
+    if (currentOP == -1) {
       buffer = result;
       result = '0';
     }
+
+    currentOP = opCode;
 
     notifyListeners();
   }
