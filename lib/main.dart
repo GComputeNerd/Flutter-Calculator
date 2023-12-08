@@ -55,7 +55,7 @@ class CalculatorMain extends StatelessWidget {
           const CalculatorDisplay(),
           CalculatorRow(buttons: [
             OperationButton(operation: () => calcState.reset(), text: "AC"),
-            CalculatorButton(onPressed: () => calcState.setOP(5), text: "%"),
+            CalculatorButton(onPressed: () => calcState.makePercentage(), text: "%"),
             CalculatorButton.icon(()=>calcState.backspaceNumber(), 
             Icon(IconData(0xeeb5, fontFamily: 'MaterialIcons', matchTextDirection: true))),
             OperationButton(operation: () => calcState.setOP(1), text: "+"),

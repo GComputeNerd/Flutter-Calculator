@@ -39,6 +39,10 @@ class CalculatorData extends ChangeNotifier {
 
     if (result == "0") {
       result = x.toString();
+    } else if (result[result.length - 1] == '%') {
+      result = result.substring(0, result.length-1);
+      setOP(5);
+      result = x.toString();
     } else {
       result = result +(x.toString());
     }
@@ -71,33 +75,64 @@ class CalculatorData extends ChangeNotifier {
     notifyListeners();
   }
 
+  void makePercentage() {
+    if (!(result[result.length -1] == '%')) {
+      result = result +('%');
+    }
+
+    notifyListeners();
+  }
+
+num parseNum(String x) {
+  num answer;
+
+  if (x[x.length - 1] == '%') {
+    answer = num.parse(x.substring(0,x.length -1)) / 100;
+  } else {
+    answer = num.parse(x);
+  }
+
+  return answer;
+}
+
   void apply() {
     // Code to run calculation
-
-    num num1 = buffer == "" ? 0 : num.parse(buffer);
-    num num2 = num.parse(result);
+    num num1 = buffer == "" ? 0 : parseNum(buffer);
+    num num2 = parseNum(result);
 
     num answer = 0;
+    bool applied = false;
 
     switch (currentOP) {
       case 1: // Addition
         answer = num2 + num1;
+        applied = true;
         break;
       case 2: // Subtraction
         answer = num1 - num2;
+        applied = true;
         break;
       case 3: // Multiplication
         answer = num1 * num2;
+        applied = true;
         break;
       case 4: // Division
         answer = num1 / num2;
+        applied = true;
         break;
       case 5: // Percentage
-        answer = (num1/100) * num2;
+        answer = (num1)/100 * num2;
+        applied = true;
+        break;
+      case -1:
+        if (result[result.length -1] == '%') {
+          answer = num2;
+          applied = true;
+        }
         break;
     }
 
-    if (currentOP != -1) { // Operation was used, need to reset
+    if (applied) { // Operation was used, need to reset
       reset();
       result = answer.toString();
     }
