@@ -1,3 +1,1 @@
-- [ ] Fix handling of negative numbers.
 - [ ] Add history tab.
-- [ ] Fix handling of when user enters a sequence of operations.s

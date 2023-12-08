@@ -8,6 +8,8 @@ class CalculatorData extends ChangeNotifier {
 
   int currentOP = -1; // Stores Operation to Perform
 
+  bool operationApplied = false;
+
   String getResultString() {
     return result;
   }
@@ -21,10 +23,10 @@ class CalculatorData extends ChangeNotifier {
         operation = " -";
         break;
       case 3:
-        operation = " *";
+        operation = " ×";
         break;
       case 4:
-        operation = " /";
+        operation = " ÷";
         break;
       case 5:
         operation = "% of";
@@ -51,6 +53,8 @@ class CalculatorData extends ChangeNotifier {
   }
 
   void backspaceNumber() {
+    testAndResetBuffers();
+
     if (result.length != 1) {
       result = result.substring(0, result.length -1);
     } else if (result == '0' && operation != "") {
@@ -68,7 +72,9 @@ class CalculatorData extends ChangeNotifier {
   void makeDecimal() {
     testAndResetBuffers();
     
-    if (!(result.contains('.'))) {
+    if (result == '-') {
+      result = result +('0.');
+    } else if (!(result.contains('.'))) {
       result = result +('.');
     }
 
@@ -86,6 +92,8 @@ class CalculatorData extends ChangeNotifier {
   void makeNegative() {
     if (result == '0') {
       result = '-';
+    } else {
+      setOP(2);
     }
 
     notifyListeners();
@@ -142,6 +150,7 @@ class CalculatorData extends ChangeNotifier {
     if (applied) { // Operation was used, need to reset
         reset();
         result = answer.toString();
+        operationApplied = true;
     }
   }
 
@@ -152,6 +161,7 @@ class CalculatorData extends ChangeNotifier {
     } catch (e) {
       reset();
       result = "BAD EXPRESSION";
+      operationApplied = true;
     }
 
     notifyListeners();
@@ -164,7 +174,15 @@ class CalculatorData extends ChangeNotifier {
       result = '0';
     }
 
-    currentOP = opCode;
+    if (result == '0') {
+      currentOP = opCode;
+    } else if (result != '0' && currentOP != -1){
+      apply();
+      buffer = result;
+      result = '0';
+      currentOP = opCode;
+      operationApplied = false;
+    }
 
     notifyListeners();
   }
@@ -176,11 +194,15 @@ class CalculatorData extends ChangeNotifier {
 
     currentOP = -1;
 
+    operationApplied = false;
+
     notifyListeners();
   }
 
   void testAndResetBuffers() {
     // Check whether to update current result, or start a new calculation
-    
+    if (operationApplied) {
+      reset();
+    }
   }
 }
