@@ -2,98 +2,55 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class CalculatorData extends ChangeNotifier {
-  num result = 0; // Stores current result
-  num prevResult = 0; // Stores previous result
-  int currentOP = -1; // Tracks current operation being used.
+  String result = "0"; // Stores user's input
+  String operation = "";
+  String buffer = "";
 
-  bool applied = false; // Checks whether the operation has been applied or not.
-
-  // To keep track of decimals
-  bool isDecimal = false;
-  int decimalPower = 0; 
-  num decimalPart = 0;
+  int currentOP = -1; // Stores Operation to Perform
 
   String getResultString() {
-    if (!(isDecimal)) {
-      return result.toString();
-    }
-
-    // The number is decimal
-    if (decimalPower == 0) { // No decimal part
-      return result.toString() +(".");
-    }
-
-    return getResultDecimal().toString();
-  }
-
-  String getBufferString() {
-    if (currentOP == -1 && prevResult == 0) {
-      return "";
-    }
-
-    var result = prevResult.toString();
-    
-    switch (currentOP) {
-      case 1:
-        result = result +(" +");
-        break;
-      case 2:
-        result = result +(" -");
-        break;
-      case 3:
-        result = result +(" *");
-        break;
-      case 4:
-        result = result +(" /");
-        break;
-      case 5:
-        result = result +("% of");
-        break;
-    }
-
     return result;
   }
 
-  num getResultDecimal() {
-    num  resultDecimal = 0;
-    if (result >= 0) {
-      resultDecimal = result + decimalPart/pow(10, decimalPower);
-    } else {
-      resultDecimal = result - decimalPart/pow(10, decimalPower);
+  String getBufferString() {
+    switch (currentOP) {
+      case 1:
+        operation = " +";
+        break;
+      case 2:
+        operation = " -";
+        break;
+      case 3:
+        operation = " *";
+        break;
+      case 4:
+        operation = " /";
+        break;
+      case 5:
+        operation = "% of";
+        break;
     }
 
-    return resultDecimal;
+    return buffer +(operation);
   }
 
   void updateNumber(num x) {
     testAndResetBuffers();
 
-    // Logic to update number
-    if (!(isDecimal)) {
-      if (result >= 0) {
-        result = result*10 + x;
-      } else {
-        result = result*10 - x;
-      }
+    if (result == "0") {
+      result = x.toString();
     } else {
-      // is Decimal
-      decimalPart = decimalPart*10 + x;
-      decimalPower++;
+      result = result +(x.toString());
     }
 
     notifyListeners();
   }
 
   void backspaceNumber() {
-    if (isDecimal) {
-      if (decimalPart == 0) {
-        isDecimal = false;
-      } else {
-      decimalPart = decimalPart ~/ 10;
-      decimalPower--;
-      }
+    if (result.length != 1) {
+      result = result.substring(0, result.length -1);
     } else {
-      result = result ~/ 10;
+      result = '0';
     }
 
     notifyListeners();
@@ -101,80 +58,70 @@ class CalculatorData extends ChangeNotifier {
 
   void makeDecimal() {
     testAndResetBuffers();
-    isDecimal = true;
+    
+    if (!(result.contains('.'))) {
+      result = result +('.');
+    }
 
     notifyListeners();
   }
 
   void apply() {
-    result = isDecimal ? getResultDecimal() : result;
-    resetDecimal();
+    // Code to run calculation
+
+    num num1 = buffer == "" ? 0 : num.parse(buffer);
+    num num2 = num.parse(result);
+
+    num answer = 0;
 
     switch (currentOP) {
       case 1: // Addition
-        result = result + prevResult;
+        answer = num2 + num1;
         break;
       case 2: // Subtraction
-        result = prevResult - result;
+        answer = num1 - num2;
         break;
       case 3: // Multiplication
-        result = prevResult * result;
+        answer = num1 * num2;
         break;
       case 4: // Division
-        result = prevResult / result;
+        answer = num1 / num2;
         break;
       case 5: // Percentage
-        result = (prevResult/100) * result;
+        answer = (num1/100) * num2;
         break;
     }
 
     if (currentOP != -1) { // Operation was used, need to reset
-      var temp = result;
       reset();
-      result = temp;
-      applied = true;
+      result = answer.toString();
     }
     notifyListeners();
   }
 
   void setOP(int opCode) {
-    apply();
-    currentOP = opCode;
-    prevResult = result;
-    result = 0;
+    // Sets Operation to be done
+    if (currentOP == -1){
+      currentOP = opCode;
+      buffer = result;
+      result = '0';
+    }
+
     notifyListeners();
   }
 
   void reset() {
-    result = 0;
-    prevResult = 0;
+    result = "0";
+    operation = "";
+    buffer = "";
+
     currentOP = -1;
-
-    applied = false;
-
-    resetDecimal();
 
     notifyListeners();
   }
 
-  void resetDecimal() {
-    isDecimal = false;
-    decimalPower = 0;
-    decimalPart = 0;
-  }
-
   void testAndResetBuffers() {
     // Check whether to update current result, or start a new calculation
-    if (applied == true && currentOP == -1) {
-      if (currentOP == -1) {
-        // Operations were all applied. So type new number
-        result = 0;
-        prevResult = 0;
-        applied = false;
-      } else {
-        // Currently in a new operation. Must retain result
-        applied = false;
-      }
-    }
+    
   }
 }
