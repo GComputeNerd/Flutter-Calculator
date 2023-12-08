@@ -31,6 +31,9 @@ class CalculatorData extends ChangeNotifier {
       case 5:
         operation = "% of";
         break;
+      case 6:
+        operation = " ^";
+        break;
     }
 
     return buffer +(operation);
@@ -137,6 +140,10 @@ class CalculatorData extends ChangeNotifier {
         break;
       case 5: // Percentage
         answer = (num1)/100 * num2;
+        applied = true;
+        break;
+      case 6:
+        answer = pow(num1, num2);
         applied = true;
         break;
       case -1:

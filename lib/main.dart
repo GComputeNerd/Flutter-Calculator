@@ -79,7 +79,7 @@ class CalculatorMain extends StatelessWidget {
             OperationButton(operation: () => calcState.setOP(4), text: "÷"),
           ]),
           CalculatorRow(buttons: [
-            OperationButton(operation: () => {}, text: "⌧"),
+            OperationButton(operation: () => calcState.setOP(6), text: "aᵇ"),
             const NumberButton(number: 0),
             OperationButton(operation: () => calcState.makeDecimal(), text: "."),
             OperationButton(operation: () => calcState.apply(), text: "="),
