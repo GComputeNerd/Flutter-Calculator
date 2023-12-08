@@ -188,8 +188,9 @@ class CalculatorData extends ChangeNotifier {
       buffer = result;
       result = '0';
       currentOP = opCode;
-      operationApplied = false;
     }
+
+    operationApplied = false;
 
     notifyListeners();
   }
