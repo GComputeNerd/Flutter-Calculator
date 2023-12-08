@@ -87,6 +87,7 @@ class CalculatorData extends ChangeNotifier {
   void makePercentage() {
     if (!(result[result.length -1] == '%')) {
       result = result +('%');
+      operationApplied = false;
     }
 
     notifyListeners();
