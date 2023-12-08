@@ -83,20 +83,27 @@ class CalculatorData extends ChangeNotifier {
     notifyListeners();
   }
 
-num parseNum(String x) {
-  num answer;
+  void makeNegative() {
+    if (result == '0') {
+      result = '-';
+    }
 
-  if (x[x.length - 1] == '%') {
-    answer = num.parse(x.substring(0,x.length -1)) / 100;
-  } else {
-    answer = num.parse(x);
+    notifyListeners();
   }
 
-  return answer;
-}
+  num parseNum(String x) {
+    num answer;
 
-  void apply() {
-    // Code to run calculation
+    if (x[x.length - 1] == '%') {
+      answer = num.parse(x.substring(0,x.length -1)) / 100;
+    } else {
+      answer = num.parse(x);
+    }
+
+    return answer;
+  }
+
+  void calculateExpression() {
     num num1 = buffer == "" ? 0 : parseNum(buffer);
     num num2 = parseNum(result);
 
@@ -133,9 +140,20 @@ num parseNum(String x) {
     }
 
     if (applied) { // Operation was used, need to reset
-      reset();
-      result = answer.toString();
+        reset();
+        result = answer.toString();
     }
+  }
+
+  void apply() {
+    // Code to run calculation
+    try {
+      calculateExpression();
+    } catch (e) {
+      reset();
+      result = "BAD EXPRESSION";
+    }
+
     notifyListeners();
   }
 

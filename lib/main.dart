@@ -64,7 +64,7 @@ class CalculatorMain extends StatelessWidget {
             const NumberButton(number: 1),
             const NumberButton(number: 2),
             const NumberButton(number: 3),
-            OperationButton(operation: () => calcState.setOP(2), text: "-"),
+            OperationButton(operation: () => calcState.makeNegative(), text: "-"),
           ]),
           CalculatorRow(buttons: [
             const NumberButton(number: 4),
