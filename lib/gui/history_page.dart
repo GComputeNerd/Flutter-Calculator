@@ -43,6 +43,19 @@ class HistoryPage extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: const Text(
+                    "History",
+                    textAlign: TextAlign.center,  
+                    style: TextStyle(
+                      fontSize: 45,
+                      color: Color(0xffCFD8DC),
+                      fontStyle: FontStyle.italic,
+                      fontFamily: 'Montserrat',
+                    )
+                  ),
+                ),
                 HistoryList(height: height, calcData: calcData),
                 Container(
                   margin: EdgeInsets.only(top: 10),
