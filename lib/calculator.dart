@@ -40,13 +40,20 @@ class CalculatorData extends ChangeNotifier {
   }
 
   void updateNumber(num x) {
+    if (result[result.length - 1] == '%') {
+      result = result.substring(0, result.length-1);
+      setOP(5);
+      result = x.toString();
+      operationApplied = false;
+
+      notifyListeners();
+
+      return;
+    }
+
     testAndResetBuffers();
 
     if (result == "0") {
-      result = x.toString();
-    } else if (result[result.length - 1] == '%') {
-      result = result.substring(0, result.length-1);
-      setOP(5);
       result = x.toString();
     } else {
       result = result +(x.toString());
@@ -87,7 +94,6 @@ class CalculatorData extends ChangeNotifier {
   void makePercentage() {
     if (!(result[result.length -1] == '%')) {
       result = result +('%');
-      operationApplied = false;
     }
 
     notifyListeners();
