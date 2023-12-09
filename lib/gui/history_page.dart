@@ -44,8 +44,11 @@ class HistoryPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HistoryList(height: height, calcData: calcData),
-                ElevatedButton(onPressed: () => Navigator.pop(context),
-                 child: const Text("Go Back"),),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: ElevatedButton(onPressed: () => Navigator.pop(context),
+                   child: const Text("Go Back"),),
+                ),
               ],
             ),
         ),
@@ -91,10 +94,12 @@ class HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
       child: Card(
         color: Color(0xff0097A7),
-        child: Center(child: tile)
+        child: Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: Center(child: tile),
+        )
       )
     );
   }

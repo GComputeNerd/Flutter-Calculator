@@ -85,7 +85,7 @@ class CalculatorMain extends StatelessWidget {
             OperationButton(operation: () => calcState.setOP(6), text: "aᵇ"),
             const NumberButton(number: 0),
             OperationButton(operation: () => calcState.makeDecimal(), text: "."),
-            OperationButton(operation: () => calcState.apply(), text: "="),
+            OperationButton(operation: () => calcState.equalsButton(), text: "="),
           ]),
           ElevatedButton(
           onPressed: () => Navigator.of(context).push(_createRoute()),

@@ -11,6 +11,7 @@ class CalculatorData extends ChangeNotifier {
   int currentOP = -1; // Stores Operation to Perform
 
   bool operationApplied = false;
+  bool equalsButtonClicked = false;
 
   List<HistoryTile> history = <HistoryTile>[];
 
@@ -113,6 +114,24 @@ class CalculatorData extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateHistory(answer) {
+    if (result[result.length -1] == '%') {
+      history.add(
+        HistoryTile(
+          question: answer.toString(),
+          answer: result,
+        ),
+      );
+    } else {
+      history.add(
+        HistoryTile(
+          question: "$buffer$operation $result",
+          answer: answer.toString(),
+        )
+      );
+    }
+  }
+
   num parseNum(String x) {
     num answer;
 
@@ -166,23 +185,9 @@ class CalculatorData extends ChangeNotifier {
     }
 
     if (applied) { // Operation was used, need to reset
-        if (result[result.length -1] == '%') {
-          history.add(
-            HistoryTile(
-              question: answer.toString(),
-              answer: result,
-            ),
-          );
-        } else {
-          history.add(
-            HistoryTile(
-              question: "$buffer$operation $result",
-              answer: answer.toString(),
-            )
-          );
+        if (equalsButtonClicked) {
+          updateHistory(answer);
         }
-
-
         reset();
         result = answer.toString();
         operationApplied = true;
@@ -200,6 +205,12 @@ class CalculatorData extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void equalsButton() {
+    equalsButtonClicked = true;
+    apply();
+    equalsButtonClicked = false;
   }
 
   void setOP(int opCode) {
