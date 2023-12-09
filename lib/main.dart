@@ -1,3 +1,4 @@
+import 'package:calculator/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color.fromARGB(255, 115, 42, 188),
+      backgroundColor: Color(0xff37474F),
       body: Center(child: CalculatorMain()),
     );
   }
@@ -84,6 +85,10 @@ class CalculatorMain extends StatelessWidget {
             OperationButton(operation: () => calcState.makeDecimal(), text: "."),
             OperationButton(operation: () => calcState.apply(), text: "="),
           ]),
+          ElevatedButton(
+          onPressed: () => Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => const HistoryPage())),
+          child: Text("Show History"),),
         ],
       ),
     );

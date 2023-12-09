@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:calculator/calculator.dart';
-
+import 'package:calculator/history_page.dart';
 
 class CalculatorDisplay extends StatelessWidget {
   const CalculatorDisplay({super.key});
@@ -69,7 +69,7 @@ class ResultDisplay extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal:7,
       vertical: vertical),
       decoration: BoxDecoration(
-        color: Colors.amber,
+        color: Color(0xffE0E0E0),
         borderRadius: borderRadius,
       ),
       child: Text(
@@ -102,7 +102,7 @@ class BufferDisplay extends StatelessWidget {
       width: width,
       padding: EdgeInsets.symmetric(vertical: 3),
       decoration: const BoxDecoration(
-        color: Colors.green,
+        color: Color(0xff00BFA5),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(10),
           bottomRight: Radius.circular(10),
@@ -189,6 +189,8 @@ class CalculatorButton extends StatelessWidget {
     );
   }
 
+  final Color buttonColor = const Color(0xff0097A7);
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -201,7 +203,7 @@ class CalculatorButton extends StatelessWidget {
         onPressed: () => onPressed(),
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: buttonColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),
@@ -240,7 +242,7 @@ class _CalculatorButtonIcon extends CalculatorButton {
         onPressed: () => onPressed(),
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: super.buttonColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),
