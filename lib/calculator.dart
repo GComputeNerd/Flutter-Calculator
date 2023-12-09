@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:calculator/gui/history_page.dart';
+
 class CalculatorData extends ChangeNotifier {
   String result = "0"; // Stores user's input
   String operation = "";
@@ -10,7 +12,7 @@ class CalculatorData extends ChangeNotifier {
 
   bool operationApplied = false;
 
-  List<ListTile> history = <ListTile>[];
+  List<HistoryTile> history = <HistoryTile>[];
 
   String getResultString() {
     return result;
@@ -166,16 +168,16 @@ class CalculatorData extends ChangeNotifier {
     if (applied) { // Operation was used, need to reset
         if (result[result.length -1] == '%') {
           history.add(
-            ListTile(
-              title: Text(answer.toString()),
-              subtitle: Text(result),
+            HistoryTile(
+              question: answer.toString(),
+              answer: result,
             ),
           );
         } else {
           history.add(
-            ListTile(
-              title: Text(answer.toString()),
-              subtitle: Text("$buffer$operation $result"),
+            HistoryTile(
+              question: "$buffer$operation $result",
+              answer: answer.toString(),
             )
           );
         }

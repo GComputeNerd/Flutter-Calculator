@@ -1,4 +1,4 @@
-import 'package:calculator/history_page.dart';
+import 'package:calculator/gui/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,10 +30,12 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
+  final Color homePageColor = const Color(0xff37474F);
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xff37474F),
+    return Scaffold(
+      backgroundColor: homePageColor,
       body: Center(child: CalculatorMain()),
     );
   }
@@ -86,11 +88,29 @@ class CalculatorMain extends StatelessWidget {
             OperationButton(operation: () => calcState.apply(), text: "="),
           ]),
           ElevatedButton(
-          onPressed: () => Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => const HistoryPage())),
+          onPressed: () => Navigator.of(context).push(_createRoute()),
           child: Text("Show History"),),
         ],
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const HistoryPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1, 0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+        
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:calculator/calculator.dart';
-import 'package:calculator/history_page.dart';
 
 class CalculatorDisplay extends StatelessWidget {
   const CalculatorDisplay({super.key});
