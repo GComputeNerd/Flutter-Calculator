@@ -10,6 +10,8 @@ class CalculatorData extends ChangeNotifier {
 
   bool operationApplied = false;
 
+  List<ListTile> history = <ListTile>[];
+
   String getResultString() {
     return result;
   }
@@ -162,6 +164,23 @@ class CalculatorData extends ChangeNotifier {
     }
 
     if (applied) { // Operation was used, need to reset
+        if (result[result.length -1] == '%') {
+          history.add(
+            ListTile(
+              title: Text(answer.toString()),
+              subtitle: Text(result),
+            ),
+          );
+        } else {
+          history.add(
+            ListTile(
+              title: Text(answer.toString()),
+              subtitle: Text("$buffer$operation $result"),
+            )
+          );
+        }
+
+
         reset();
         result = answer.toString();
         operationApplied = true;
