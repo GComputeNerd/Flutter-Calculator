@@ -1,5 +1,4 @@
 import 'package:calculator/calculator.dart';
-import 'package:calculator/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +10,6 @@ class HistoryPage extends StatelessWidget {
     var calcData = context.watch<CalculatorData>() ;
 
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
 
     var homePageColor = const Color(0xff37474F);
 

@@ -115,11 +115,11 @@ class CalculatorData extends ChangeNotifier {
   }
 
   void updateHistory(answer) {
-    if (result[result.length -1] == '%') {
+    if (result[result.length -1] == '%' && buffer == "") {
       history.add(
         HistoryTile(
-          question: answer.toString(),
-          answer: result,
+          question: result,
+          answer: answer.toString(),
         ),
       );
     } else {
